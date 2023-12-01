@@ -12,7 +12,7 @@
 
 class FileLoader {
 public:
-    static std::vector<std::string> load_file(std::string file_name) {
+    static std::vector<std::string> load_file(const std::string& file_name) {
         std::ifstream file(file_name);
         std::vector<std::string> lines;
         std::string line;
