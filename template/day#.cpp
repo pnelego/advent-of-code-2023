@@ -27,7 +27,7 @@ int main()
     std::vector<std::string> lines = FileLoader::load_file("input.txt");
     //in order to get accurate time measurements we need to have two seperate vectors
     //one for each part
-    std::vector<std::string> lines2 = FileLoader::load_file("input.txt");
+    std::vector<std::string> lines2 = lines;
 
 
     Timer timer;
@@ -51,5 +51,4 @@ int main()
 
 
     return 0;
-}
 }
