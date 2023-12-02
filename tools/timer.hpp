@@ -15,13 +15,13 @@ private:
 public:
     void start() {
 
-        start_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+        start_time = std::chrono::duration_cast<std::chrono::microseconds>(
                 std::chrono::system_clock::now().time_since_epoch()
         ).count();
     }
 
     [[nodiscard]] uint64_t stop() const {
-        const uint64_t end_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+        const uint64_t end_time = std::chrono::duration_cast<std::chrono::microseconds>(
                 std::chrono::system_clock::now().time_since_epoch()
         ).count();
         return end_time - start_time;
