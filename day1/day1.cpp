@@ -28,7 +28,7 @@ uint32_t part_one(std::vector<std::string> &lines)
         }
 
         //go backwards until we find a digit
-        for (uint8_t i = line.length()-1; i >= 0; i--)
+        for (int8_t i = line.length()-1; i >= 0; i--)
         {
             if (line[i] >= 0x30 && line[i] <= 0x39)
             {
