@@ -76,20 +76,26 @@ uint32_t part_two(std::vector<std::string> &lines)
             }
         }
 
-        for (const char &c : line)
+        //go forward until we find a digit
+        for (char i : line)
         {
-            if (c >= 0x30 && c <= 0x39)
+            if (i >= 0x30 && i <= 0x39)
             {
-                digits += c;
+                sum += (((int)i) - 0x30) * 0xA;
+                break;
             }
         }
 
-        std::string numberPair;
-        numberPair += digits[0];
-        numberPair += digits[digits.length() - 1];
-        sum += std::stoi(numberPair);
+        //go backwards until we find a digit
+        for (int8_t i = line.length()-1; i >= 0; i--)
+        {
+            if (line[i] >= 0x30 && line[i] <= 0x39)
+            {
+                sum += (((int)line[i]) - 0x30);
+                break;
+            }
+        }
     }
-
     return sum;
 }
 
