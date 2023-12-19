@@ -10,7 +10,7 @@ set (TOOLS tools/file_loader.hpp
 
 
 #set optimization flags for release
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 
 set(TARGETS day1 day2 day3)

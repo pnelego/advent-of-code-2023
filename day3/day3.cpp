@@ -12,6 +12,7 @@
 
 uint32_t part_one(const std::vector<std::string> &lines)
 {
+
 }
 
 

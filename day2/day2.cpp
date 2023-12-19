@@ -12,96 +12,63 @@
 
 
 
-uint32_t f_GameId(const std::string &line)
+bool IsLinePossible(const char *line, const uint32_t length)
 {
-    //start at the 6th character, because the first 5 are "Game "
-    uint32_t result = 0;
-    for (uint8_t i = 5; i < line.length(); i++)
-    {
-        if (line[i] >= 0x30 && line[i] <= 0x39)
-        {
-            result *= 10;
-            result += (((int)line[i]) - 0x30);
-        }
-        else
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-bool IsLinePossible(const std::string &line)
-{
-    uint8_t chunkRed = 0;
-    uint8_t chunkGreen = 0;
-    uint8_t chunkBlue = 0;
-
     uint8_t unknownColor = 0;
-    //start at the 9th character, because the first 8 are guarenteed to be "Game #: "
-    for (uint32_t i = 8; i < line.length(); i++)
+    for (uint8_t i = 9; i < length; i++)
     {
         if (line[i] >= 0x30 && line[i] <= 0x39)
         {
             unknownColor *= 10;
-            unknownColor += (((int)line[i]) - 0x30);
+            unknownColor += (int)line[i] - 0x30;
         }
-        if (line[i] == 'r' && line[i-1] != 'g')
-        {
-            chunkRed = unknownColor;
-            unknownColor = 0;
-            //skip 3 characters
-            i += 3;
-        }
-        if (line[i] == 'g')
-        {
-            chunkGreen = unknownColor;
-            unknownColor = 0;
-            //skip 5 characters
-            i += 5;
-        }
-        if (line[i] == 'b')
-        {
-            chunkBlue = unknownColor;
-            unknownColor = 0;
-            //skip 4 characters
-            i += 4;
-        }
-        if (line[i] == ';')
-        {
-            //end the chunk
-            if (chunkRed > 12 || chunkGreen > 13 || chunkBlue > 14)
-            {
-                return false;
-            }
 
-            chunkRed = 0;
-            chunkGreen = 0;
-            chunkBlue = 0;
+        switch (line[i])
+        {
+            case 0x72: //r
+                if (unknownColor > 12)
+                {
+                    return false;
+                }
+                unknownColor ^= unknownColor;
+                //skip 4 characters
+                i += 4;
+                break;
+
+            case 0x67: //g
+                if (unknownColor > 13)
+                {
+                    return false;
+                }
+                unknownColor ^= unknownColor;
+                //skip 6 characters
+                i += 6;
+                break;
+
+            case 0x62: //b
+                if (unknownColor > 14)
+                {
+                    return false;
+                }
+                unknownColor ^= unknownColor;
+                //skip 5 characters
+                i += 5;
+                break;
+            default:
+                break;
         }
     }
-
-
-    //check the last chunk
-    if (chunkRed > 12 || chunkGreen > 13 || chunkBlue > 14)
-    {
-        return false;
-    }
-
-    //std::cout << std::endl;
     return true;
 }
 
 uint32_t part_one(const std::vector<std::string> &lines)
 {
     uint32_t sum = 0;
-    for (const std::string &line : lines)
+    for (uint8_t lineNum = 0; lineNum < lines.size(); lineNum++)
     {
-        const uint8_t gameNumber = f_GameId(line);
-
-        if (IsLinePossible(line))
+        if (IsLinePossible(lines[lineNum].c_str(), lines[lineNum].length()))
         {
-            sum += gameNumber;
+            sum += lineNum+1;
         }
     }
 
@@ -202,6 +169,7 @@ int main()
     const uint64_t timeTaken = timer.stop();
     std::cout << "Time to execute: " << timeTaken << "µs" << std::endl;
     std::cout << "Result: " << result << std::endl;
+    std::cout << "Expected result: 1867" << std::endl;
 
 
     //part two
@@ -211,6 +179,7 @@ int main()
     const uint64_t timeTaken2 = timer.stop();
     std::cout << "Time to execute: " << timeTaken2 << "µs" << std::endl;
     std::cout << "Result: " << result2 << std::endl;
+    std::cout << "Expected result: 84538" << std::endl;
 
     return 0;
 }
