@@ -80,7 +80,7 @@ uint32_t part_one(const std::vector<std::string> &lines)
  * BEGIN PART TWO
  */
 
-uint32_t GetLinePower(const std::string &line)
+uint32_t GetLinePower(const char *line, const uint32_t length)
 {
 
     //very similar to the IsLinePossible function, but we're trying to get
@@ -91,7 +91,7 @@ uint32_t GetLinePower(const std::string &line)
     uint32_t largestBlue = 0;
 
     uint32_t unknownColor = 0;
-    for (uint32_t i = 8; i < line.length(); i++)
+    for (uint32_t i = 8; i < length; i++)
     {
         if (line[i] >= 0x30 && line[i] <= 0x39)
         {
@@ -99,41 +99,37 @@ uint32_t GetLinePower(const std::string &line)
             unknownColor += (((int)line[i]) - 0x30);
         }
 
-        if (line[i] == 'r' && line[i-1] != 'g')
+        switch (line[i])
         {
-
-            //we have a new red chunk
-            if (unknownColor > largestRed)
-            {
-                largestRed = unknownColor;
-            }
-            unknownColor = 0;
-
-            //skip 3 characters
-            i += 3;
-        }
-        if (line[i] == 'g')
-        {
-            //we have a new green chunk
-            if (unknownColor > largestGreen)
-            {
-                largestGreen = unknownColor;
-            }
-            unknownColor = 0;
-
-            //skip 5 characters
-            i += 5;
-        }
-        if (line[i] == 'b')
-        {
-            //we have a new blue chunk
-            if (unknownColor > largestBlue)
-            {
-                largestBlue = unknownColor;
-            }
-            unknownColor = 0;
-            //skip 4 characters
-            i += 4;
+            case 0x72: //r
+                if (unknownColor > largestRed)
+                {
+                    largestRed = unknownColor;
+                }
+                unknownColor ^= unknownColor;
+                //skip 4 characters
+                i += 4;
+                break;
+            case 0x67: //g
+                if (unknownColor > largestGreen)
+                {
+                    largestGreen = unknownColor;
+                }
+                unknownColor ^= unknownColor;
+                //skip 6 characters
+                i += 6;
+                break;
+            case 0x62: //b
+                if (unknownColor > largestBlue)
+                {
+                    largestBlue = unknownColor;
+                }
+                unknownColor ^= unknownColor;
+                //skip 5 characters
+                i += 5;
+                break;
+            default:
+                break;
         }
     }
 
@@ -145,7 +141,7 @@ uint32_t part_two(const std::vector<std::string> &lines)
     uint32_t sum = 0;
     for (const std::string &line : lines)
     {
-        sum+= GetLinePower(line);
+        sum+= GetLinePower(line.c_str(), line.length());
     }
     return sum;
 }
