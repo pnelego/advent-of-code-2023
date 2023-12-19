@@ -5,7 +5,12 @@ project(AdventOfCode2023)
 set (CMAKE_CXX_STANDARD 23)
 
 set (TOOLS tools/file_loader.hpp
-        tools/timer.hpp)
+        tools/timer.hpp
+        tools/fstoi.hpp)
+
+
+#set optimization flags for release
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 
 set(TARGETS day1 day2 day3)

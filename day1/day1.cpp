@@ -104,7 +104,7 @@ uint32_t part_two(std::vector<std::string> &lines)
 int main()
 {
     //read input file
-    std::vector<std::string> lines = FileLoader::load_file("input.txt");
+    std::vector<std::string> lines = FileLoader::load_file("../day1/input.txt");
     //in order to get accurate time measurements we need to have two separate vectors
     //one for each part so one doesn't affect the other
     std::vector<std::string> lines2 = lines;
